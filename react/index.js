@@ -26,7 +26,7 @@ var Selector = React.createClass({
     };
     return (
       <div>
-          <div className="well">
+        <div className="well">
           <Button id={1} bsStyle="primary" bsSize="large" onClick={this.handleClick} block>
             타겟 맞추기
           </Button>

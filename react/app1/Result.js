@@ -17,11 +17,11 @@ var TableRow = React.createClass({
 });
 
 function average(arr){
-    var sum = 0;
-    for(var i=0; i<arr.length; i++){
-        sum += parseFloat(arr[i]);
-    }
-    return sum/arr.length;
+  var sum = 0;
+  for(var i=0; i<arr.length; i++){
+    sum += parseFloat(arr[i]);
+  }
+  return sum/arr.length;
 }
 
 var Result = React.createClass({
@@ -130,10 +130,10 @@ var Result = React.createClass({
           this.setState({saved: true});
         }
       })
-      //.then((response) => response.json())
-      //.then((responseJson) => {
-        //console.log(responseJson);
-      //})
+    //.then((response) => response.json())
+    //.then((responseJson) => {
+    //console.log(responseJson);
+    //})
       .catch((error) => {
         alert('데이터가 정상적으로 저장되지 못하였습니다. 다시 시도하세요.');
       });
