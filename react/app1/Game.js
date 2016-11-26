@@ -19,28 +19,32 @@ var Game = React.createClass({
       countdown: false,
       targetDisplay: false,
       done: false,
-      targetAppearedTime: 0,
+      //targetAppearedTime: 0,
       numberOfGames: 0,
       count: 0
     };
   },
 
-  countdownTimer: null,
-  target: null,
   targetPositions: null,
   targetRadii: null,
-  delays: null,
+  targetAppearedTime: null,
   touches: null,
+  touchSizes: null,
+  touchDurations: null,
+  touchStartTime: null,
   accuracies: null,
-  durations: null,
+  delays: null,
 
   componentWillMount() {
     this.targetPositions = [];
     this.targetRadii = [];
+    this.targetAppearedTime = 0;
     this.touches = [];
+    this.touchSizes = [];
+    this.touchDurations = [];
+    this.touchStartTime = 0;
     this.accuracies = [];
     this.delays = [];
-    this.durations = [];
   },
 
   resetComponent(){
@@ -60,19 +64,46 @@ var Game = React.createClass({
     this.setState({
       countdown: false,
       targetDisplay: true,
-      targetAppearedTime: Date.now()
+      //targetAppearedTime: Date.now()
     });
   },
 
-  hitTarget(e) {
+  hitTargetTouchStart(e) {
     // validation check
     if (!this.state.game || this.state.countdown || !this.state.targetDisplay) {return};
     // setting touch infomation
-    var x = e.clientX;
-    var y = e.clientY;
+    e.preventDefault();
+    //this.delays.push((Date.now() - this.state.targetAppearedTime)/1000.0);
+    this.delays.push((Date.now() - this.targetAppearedTime)/1000.0);
+    var x, y;
+    if(e.type == 'touchstart'){
+      x = e.targetTouches[0].clientX;
+      y = e.targetTouches[0].clientY;
+    }else{
+      x = e.clientX;
+      y = e.clientY;
+    }
     this.touches.push([x, y]);
     this.accuracies.push(distance(this.targetPositions[this.targetPositions.length-1], [x, y]));
-    this.delays.push((Date.now() - this.state.targetAppearedTime)/1000.0);
+    this.touchStartTime = Date.now()
+    return;
+  },
+  hitTargetTouchEnd(e) {
+    // validation check
+    if (!this.state.game || this.state.countdown || !this.state.targetDisplay) {return;}
+    if (this.delays.length <= this.touchSizes.length) {return;}
+    // setting touch infomation
+    e.preventDefault();
+    var x, y;
+    if(e.type == 'touchend'){
+      x = e.changedTouches[0].clientX;
+      y = e.changedTouches[0].clientY;
+    }else{
+      x = e.clientX;
+      y = e.clientY;
+    }
+    this.touchSizes.push(distance(this.touches[this.touches.length-1], [x, y]));
+    this.touchDurations.push((Date.now() - this.touchStartTime)/1000.0);
     // hide target for a while
     var nextCount = this.state.count + 1
     this.setState({
@@ -88,11 +119,10 @@ var Game = React.createClass({
     setTimeout(function(){
       this.setState({
         targetDisplay: true,
-        targetAppearedTime: Date.now()
       });
     }.bind(this), 500);
+    return;
   },
-
   endGame() {
     this.setState({
       game: false,
@@ -193,6 +223,8 @@ var Game = React.createClass({
           targetPositions={this.targetPositions}
           targetRadii={this.targetRadii}
           touches={this.touches}
+          touchSizes={this.touchSizes}
+          touchDurations={this.touchDurations}
           accuracies={this.accuracies}
           delays={this.delays}
           count={this.state.count}
@@ -212,7 +244,7 @@ var Game = React.createClass({
     var result = this.getResult();
     var canvasStyle = {
       width:'100%',
-      height:'100vh',
+      height:'90vh',
       minHeight:'100%',
       padding: '10px',
       border: '10px',
@@ -224,17 +256,28 @@ var Game = React.createClass({
     }
 
     return (
-      <Grid
-        className="canvas"
-        style={canvasStyle}
-        onClick={this.hitTarget}>
+      <div>
         {result}
         {countdownTimer}
         {inputForm}
         {score}
-        {target}
-      </Grid>
+        <Grid
+          className="canvas"
+          style={canvasStyle}
+          onTouchStart={this.hitTargetTouchStart}
+          onMouseDown={this.hitTargetTouchStart}
+          onTouchEnd={this.hitTargetTouchEnd}
+          onMouseUp={this.hitTargetTouchEnd}
+        >
+          {target}
+        </Grid>
+      </div>
     );
+  },
+  componentDidUpdate(prevProps, prevState){
+    if(!prevState.targetDisplay && this.state.targetDisplay){
+      this.targetAppearedTime = Date.now();
+    }
   }
 });
 

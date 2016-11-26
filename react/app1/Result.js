@@ -7,12 +7,22 @@ var TableRow = React.createClass({
       <tr>
         <td>{this.props.idx}</td>
         <td>{this.props.delay.toFixed(2)}</td>
+        <td>{this.props.touchDuration.toFixed(2)}</td>
+        <td>{this.props.touchSize.toFixed(2)}</td>
         <td>{this.props.accuracy.toFixed(2)}</td>
         <td>{this.props.targetRadius.toFixed(2)}</td>
       </tr>
     );
   }
 });
+
+function average(arr){
+    var sum = 0;
+    for(var i=0; i<arr.length; i++){
+        sum += parseFloat(arr[i]);
+    }
+    return sum/arr.length;
+}
 
 var Result = React.createClass({
   getInitialState(){
@@ -25,6 +35,8 @@ var Result = React.createClass({
     targetPositions: React.PropTypes.array,
     targetRadii: React.PropTypes.array,
     touches: React.PropTypes.array,
+    touchSizes: React.PropTypes.array,
+    touchDurations: React.PropTypes.array,
     accuracies: React.PropTypes.array,
     delays : React.PropTypes.array,
     count: React.PropTypes.number,
@@ -32,28 +44,18 @@ var Result = React.createClass({
   },
 
   getAvergeTr(){
-    var sumOfAccuracies = 0;
-    for (var i=0; i<this.props.count; i++){
-      sumOfAccuracies += parseFloat(this.props.accuracies[i]);
-    }
-    var avgOfAccuracies = sumOfAccuracies/this.props.count;
-
-    var sumOfDelays = 0;
-    for (var i=0; i<this.props.count; i++){
-      sumOfDelays += parseFloat(this.props.delays[i]);
-    }
-    var avgOfDelays = (sumOfDelays)/this.props.count;
-
-    var sumOfTargetRadii = 0;
-    for (var i=0; i<this.props.count; i++){
-      sumOfTargetRadii += parseFloat(this.props.targetRadii[i]);
-    }
-    var avgOfTargetRadii = sumOfTargetRadii/this.props.count;
+    var avgOfDelays = average(this.props.delays);
+    var avgOfTouchDuration = average(this.props.touchDurations);
+    var avgOfTouchSize = average(this.props.touchSizes);
+    var avgOfAccuracies = average(this.props.accuracies);
+    var avgOfTargetRadii = average(this.props.targetRadii);
 
     return (
       <TableRow
         idx='avg.'
         delay={avgOfDelays}
+        touchDuration={avgOfTouchDuration}
+        touchSize={avgOfTouchSize}
         accuracy={avgOfAccuracies}
         targetRadius={avgOfTargetRadii}
       />
@@ -68,6 +70,8 @@ var Result = React.createClass({
           key={i+1}
           idx={i+1}
           delay={this.props.delays[i]}
+          touchDuration={this.props.touchDurations[i]}
+          touchSize={this.props.touchSizes[i]}
           accuracy={this.props.accuracies[i]}
           targetRadius={this.props.targetRadii[i]}
         />
@@ -89,7 +93,9 @@ var Result = React.createClass({
                 <tr>
                   <th>#</th>
                   <th>반응시간</th>
-                  <th>정확도</th>
+                  <th>터치시간</th>
+                  <th>터치크기</th>
+                  <th>오차</th>
                   <th>반지름</th>
                 </tr>
               </thead>

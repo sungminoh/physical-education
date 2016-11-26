@@ -66,20 +66,30 @@ def app1Result():
         target_positions = request_data['targetPositions']
         target_radii = request_data['targetRadii']
         touches = request_data['touches']
+        touch_sizes = request_data['touchSizes']
+        touch_durations = request_data['touchDurations']
+        accuracies = request_data['accuracies']
         delays = request_data['delays']
         count = request_data['count']
         test_id = get_test_id()
-        data = [(test_id, target_positions[i][0], target_positions[i][1],
-                 target_radii[i], touches[i][0], touches[i][1], delays[i])
+        data = [(test_id,
+                 target_positions[i][0], target_positions[i][1], target_radii[i],
+                 touches[i][0], touches[i][1], touch_sizes[i], touch_durations[i],
+                 accuracies[i], delays[i])
                 for i in range(count)]
         query = ('INSERT INTO app1 '
-                 '(test_id, target_x, target_y, target_r, touch_x, touch_y, delay) '
-                 'VALUES (%s, %s, %s, %s, %s, %s, %s) ')
+                 '(test_id, target_x, target_y, target_r, '
+                 'touch_x, touch_y, touch_s, touch_d, '
+                 'accuracy, delay) '
+                 'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ')
         g.db.cursor().executemany(query, data)
         g.db.commit()
         return jsonify(result = 'success')
     elif request.method == 'GET':
-        query = ('SELECT test_id, target_x, target_y, target_r, touch_x, touch_y, delay, ts '
+        query = ('SELECT '
+                 'test_id, target_x, target_y, target_r, '
+                 'touch_x, touch_y, touch_s, touch_d, '
+                 'accuracy, delay, ts '
                  'FROM app1 ')
         data = fetch_data(query)
         return jsonify(result = data)
@@ -92,14 +102,17 @@ def app1Download():
         filename = current_tiem_string + '.csv'
 
         header = ['test_id', 'target_x', 'target_y', 'target_r',
-                  'touch_x', 'touch_y', 'delay', 'ts']
-        query = ('SELECT test_id, target_x, target_y, target_r, touch_x, touch_y, delay, ts '
+                  'touch_x', 'touch_y', 'touch_size', 'touch_duration',
+                  'error', 'delay', 'timestamp']
+        query = ('SELECT '
+                 'test_id, target_x, target_y, target_r, '
+                 'touch_x, touch_y, touch_s, touch_d, '
+                 'accuracy, delay, ts '
                  'FROM app1 ')
         data = fetch_data(query)
         csvData = [','.join(header)]
         csvData.extend([','.join(str(x) for x in entity) for entity in data])
         csvText = '\n'.join(csvData)
-        print csvText
         return Response(csvText,
                         mimetype='text/csv',
                         headers={

@@ -4,6 +4,8 @@ import { Table, Button, Form, FormGroup } from 'react-bootstrap';
 
 var TableRow = React.createClass({
   render(){
+    var date = new Date(this.props.ts);
+    var dateText = date.toLocaleString();
     return (
       <tr>
         <td>{this.props.idx}</td>
@@ -12,8 +14,11 @@ var TableRow = React.createClass({
         <td>{this.props.target_r}</td>
         <td>{this.props.touch_x}</td>
         <td>{this.props.touch_y}</td>
+        <td>{this.props.touch_s}</td>
+        <td>{this.props.touch_d}</td>
+        <td>{this.props.accuracy}</td>
         <td>{this.props.delay}</td>
-        <td>{this.props.ts}</td>
+        <td>{dateText}</td>
       </tr>
     )
   }
@@ -33,8 +38,11 @@ function  getList(data){
         target_r={row[3]}
         touch_x={row[4]}
         touch_y={row[5]}
-        delay={row[6]}
-        ts={row[7]}
+        touch_s={row[6]}
+        touch_d={row[7]}
+        accuracy={row[8]}
+        delay={row[9]}
+        ts={row[10]}
       />
     )
   }
@@ -77,8 +85,11 @@ var History = React.createClass({
               <th>타겟 x</th>
               <th>타겟 y</th>
               <th>타겟 r</th>
-              <th>입력 x</th>
-              <th>입력 y</th>
+              <th>터치 x</th>
+              <th>터치 y</th>
+              <th>터치 크기</th>
+              <th>터치 시간</th>
+              <th>오차</th>
               <th>반응 시간</th>
               <th>실험 시각</th>
             </tr>

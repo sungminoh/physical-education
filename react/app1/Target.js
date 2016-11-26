@@ -15,8 +15,6 @@ var Target = React.createClass({
     this.props.callback([(specs.left+specs.right)/2, (specs.top+specs.bottom)/2, specs.width]);
   },
   render() {
-    var left_pos = random(100) + '%';
-    var top_pos = random(100) + '%';
     var circleStyle = {
       position: 'relative',
       left: this.props.left,

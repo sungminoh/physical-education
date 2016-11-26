@@ -1,5 +1,12 @@
 import React from 'react';
 
+var style = {
+  position: 'fixed',
+  opacity: 0.5,
+  zIndex: 99,
+  color: 'black'
+}
+
 var Score = React.createClass({
   propTypes: {
     delay: React.PropTypes.number,
@@ -15,11 +22,13 @@ var Score = React.createClass({
       accuracy = accuracy.toFixed(2);
     }
     return (
-      <ul>
+        <div style={{style}}>
+            <ul>
         <li>반응시간 : {delay} sec</li>
         <li>정확도 : {accuracy} pixels</li>
         <li>회수 : {this.props.count}/{this.props.numberOfGames}</li>
       </ul>
+  </div>
     );
   }
 });
