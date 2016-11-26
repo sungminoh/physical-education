@@ -82,8 +82,8 @@ var Result = React.createClass({
 
   render() {
     return (
-      <div className="static-modal">
-        <Modal.Dialog>
+      //<div className="static-modal">
+        <Modal.Dialog style={{overflowY: 'auto'}}>
           <Modal.Header>
             <Modal.Title>결과</Modal.Title>
           </Modal.Header>
@@ -110,7 +110,7 @@ var Result = React.createClass({
             <Button bsStyle="primary" onClick={this.sendResult} disabled={this.state.saved}>저장</Button>
           </Modal.Footer>
         </Modal.Dialog>
-      </div>
+      //</div>
     );
   },
 

@@ -1,10 +1,11 @@
 import React from 'react';
 
-var style = {
+var scoreStyle = {
   position: 'fixed',
   opacity: 0.5,
   zIndex: 99,
-  color: 'black'
+  color: 'black',
+  marginTop: '20px'
 }
 
 var Score = React.createClass({
@@ -22,7 +23,7 @@ var Score = React.createClass({
       accuracy = accuracy.toFixed(2);
     }
     return (
-      <div style={{style}}>
+      <div style={scoreStyle}>
         <ul>
           <li>반응시간 : {delay} sec</li>
           <li>정확도 : {accuracy} pixels</li>

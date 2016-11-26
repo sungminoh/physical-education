@@ -5,9 +5,15 @@ import { Router, Route, browserHistory, IndexRoute, Link } from 'react-router';
 import Game from './Game';
 import History from './History';
 
+const wellStyles = {
+  position: 'relative',
+  maxWidth: 400,
+  margin: 'auto'
+};
+
 
 function Index(props){
-  return (<div>{props.children}</div>);
+  return props.children;
 }
 
 
@@ -20,21 +26,14 @@ var Selector = React.createClass({
     }
   },
   render(){
-    const wellStyles = {
-      position: 'relative',
-      maxWidth: 400,
-      margin: 'auto'
-    };
     return (
-      <div>
-        <div className="well" style={wellStyles}>
-          <Button id={1} bsStyle="info" bsSize="large" onClick={this.handleClick} block>
-            게임 시작
-          </Button>
-          <Button id={2} bsStyle="info" bsSize="large" onClick={this.handleClick} block>
-            결과 보기
-          </Button>
-        </div>
+      <div className="well" style={wellStyles}>
+        <Button id={1} bsStyle="info" bsSize="large" onClick={this.handleClick} block>
+          게임 시작
+        </Button>
+        <Button id={2} bsStyle="info" bsSize="large" onClick={this.handleClick} block>
+          결과 보기
+        </Button>
       </div>
     )
   }

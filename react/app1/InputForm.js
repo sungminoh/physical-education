@@ -33,7 +33,7 @@ var InputForm = React.createClass({
 
   render() {
     return (
-      <Form inline>
+      <Form inline style={{margin: 10}}>
         <FormGroup validationState={this.getValidationState()} >
           <ControlLabel>횟수:</ControlLabel>
           {' '}

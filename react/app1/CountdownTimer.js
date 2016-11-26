@@ -1,10 +1,9 @@
 import React from 'react';
 
-var style = {
-  position: 'fixed',
+var countdownTimerStyle = {
+  position: 'relative',
   textAlign: 'center',
-  bottom: '50%',
-  right: '50%',
+  margin: 'auto',
   opacity: 0.5,
   zIndex: 99,
   fontSize: 100,
@@ -12,7 +11,7 @@ var style = {
 }
 
 var CountdownTimer = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       sec: 3
     };
@@ -21,24 +20,24 @@ var CountdownTimer = React.createClass({
     onExpired: React.PropTypes.func.isRequired,
     sec: React.PropTypes.number
   },
-  tick: function() {
+  tick() {
     this.setState({sec: this.state.sec - 1});
     if (this.state.sec <= 0) {
       clearInterval(this.interval);
       this.props.onExpired();
     }
   },
-  componentDidMount: function() {
+  componentDidMount() {
     this.setState({sec: this.props.sec});
     this.interval = setInterval(this.tick, 1000);
   },
-  componentWillUnmount: function(prevProps, prevState) {
+  componentWillUnmount(prevProps, prevState) {
     clearInterval(this.interval);
   },
-  render: function() {
+  render() {
     return (
       <div
-        style={style}>
+        style={countdownTimerStyle}>
         {this.state.sec}
       </div>
     );

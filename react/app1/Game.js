@@ -137,13 +137,6 @@ var Game = React.createClass({
   },
 
   getInputForm(){
-    const styles = {
-      position: 'relative',
-      maxWidth: 400,
-      margin: 'auto',
-      backgroundPosition: 'center center'
-    };
-
     if (!this.state.game && !this.state.done){
       var historyButton = (
         <Button
@@ -237,30 +230,34 @@ var Game = React.createClass({
   },
 
   render() {
-    var inputForm = this.getInputForm();
-    var target = this.getTarget();
-    var countdownTimer = this.getCountdownTimer();
-    var score = this.getScore();
-    var result = this.getResult();
-    var canvasStyle = {
-      width:'100%',
-      height:'90vh',
-      minHeight:'100%',
-      padding: '10px',
-      border: '10px',
-    }
-    if (target){
-      canvasStyle.borderStyle = 'groove';
-    }else{
-      canvasStyle.borderStyle = 'none';
-    }
+    if (!this.state.game){
+      var inputForm = this.getInputForm();
+      var result = this.getResult();
 
-    return (
-      <div>
-        {result}
-        {countdownTimer}
-        {inputForm}
-        {score}
+      return(
+        <div>
+          {result}
+          {inputForm}
+          {score}
+        </div>
+      );
+
+    }else{
+      var countdownTimer = this.getCountdownTimer();
+      var target = this.getTarget();
+      var score = this.getScore();
+      var canvasStyle = {
+        width:'100%',
+        height:'100vh',
+        minHeight:'100%',
+        padding: '10px',
+      }
+      if (target){
+        canvasStyle.borderStyle = 'groove';
+      }else{
+        canvasStyle.borderStyle = 'none';
+      }
+      return (
         <Grid
           className="canvas"
           style={canvasStyle}
@@ -269,10 +266,11 @@ var Game = React.createClass({
           onTouchEnd={this.hitTargetTouchEnd}
           onMouseUp={this.hitTargetTouchEnd}
         >
+          {countdownTimer}
           {target}
         </Grid>
-      </div>
-    );
+      );
+    }
   },
   componentDidUpdate(prevProps, prevState){
     if(!prevState.targetDisplay && this.state.targetDisplay){
