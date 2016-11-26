@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
+import { Form, FormGroup, ControlLabel, FormControl, Button, Row } from 'react-bootstrap';
 
 var InputForm = React.createClass({
   PropTypes: {
@@ -8,17 +8,13 @@ var InputForm = React.createClass({
 
   getInitialState() {
     return {
-      value: 10
+      value: 10,
+      validity: true
     };
   },
 
-  isValid(){
-    const value = this.state.value;
-    return value.length == 0 || !isNaN(parseInt(value))
-  },
-
   getValidationState() {
-    if (this.isValid()){
+    if (this.state.validity){
       return 'success';
     }else{
       return 'error';
@@ -26,10 +22,12 @@ var InputForm = React.createClass({
   },
 
   handleChange(e) {
+    const parsedValue = parseInt(e.target.value);
+    this.setState({validity: !isNaN(parsedValue) && parsedValue != 0});
     this.setState({ value: e.target.value });
   },
 
-  handleClick(){
+  startGame(){
     this.props.onClick(parseInt(this.state.value));
   },
 
@@ -48,11 +46,12 @@ var InputForm = React.createClass({
         </FormGroup>
         {' '}
         <Button
-          onClick={this.handleClick}
-          disabled={!this.isValid()}
+          onClick={this.startGame}
+          disabled={!this.state.validity}
         >
           시작
         </Button>
+        {this.props.additionalButtons}
       </Form>
     );
   }

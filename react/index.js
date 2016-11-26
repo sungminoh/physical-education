@@ -40,11 +40,19 @@ var Selector = React.createClass({
 });
 
 
+const routes = {
+  path:'/',
+  component:Index,
+  indexRoute: {component: Selector},
+  childRoutes:[
+    App1
+  ]
+}
+
+
 const rootElement = document.getElementById('root');
 ReactDOM.render(
-  <Router history={browserHistory}>
-    <Route path = "/" component = {Index}>
-      <IndexRoute component = {Selector} />
-      <Route path = "app1" component = {App1} />
-    </Route>
-  </Router>, rootElement);
+  <Router
+    history={browserHistory}
+    routes={routes}
+  />, rootElement)

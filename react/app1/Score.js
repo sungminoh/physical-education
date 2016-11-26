@@ -8,11 +8,9 @@ var Score = React.createClass({
     count: React.PropTypes.number
   },
   render: function () {
-    var delay = this.props.delay / 1000;
+    var delay = this.props.delay;
     var accuracy = this.props.accuracy;
-    if (isNaN(delay)){
-      delay = null;
-    } else {
+    if (delay){
       delay = delay.toFixed(2);
       accuracy = accuracy.toFixed(2);
     }
