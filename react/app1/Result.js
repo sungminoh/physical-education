@@ -123,7 +123,7 @@ var Result = React.createClass({
       },
       body: JSON.stringify(this.props)
     }
-    fetch('/app1/result', requestHeader)
+      fetch('/physical/app1/result', requestHeader)
       .then((response) => {
         if (response.ok){
           alert('성공적으로 저장되었습니다.');

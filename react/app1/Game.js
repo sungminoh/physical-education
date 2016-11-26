@@ -133,7 +133,7 @@ var Game = React.createClass({
   },
 
   redirectToHistory(e){
-    this.props.router.push({ pathname: '/app1/history' });
+      this.props.router.push({ pathname: '/physical/app1/history' });
   },
 
   getInputForm(){

@@ -57,7 +57,7 @@ var History = React.createClass({
     }
   },
   getResultHistory(){
-    fetch('/app1/result', { method: 'GET', accept: 'application/json'})
+      fetch('/physical/app1/result', { method: 'GET', accept: 'application/json'})
       .then((response) => response.json())
       .then((responseJson) => {
         this.data = responseJson.result;
