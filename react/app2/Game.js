@@ -18,7 +18,6 @@ var Game = React.createClass({
       countdown: false,
       targetDisplay: false,
       done: false,
-      //targetAppearedTime: 0,
       numberOfGames: 0,
       count: 0
     };
@@ -51,11 +50,12 @@ var Game = React.createClass({
     this.componentWillMount();
   },
 
-  startGame(n) {
+  startGame(n, size) {
     this.setState({
       game: true,
       countdown: true,
-      numberOfGames: n
+      numberOfGames: n,
+      keySize: size
     });
   },
 
@@ -232,7 +232,6 @@ var Game = React.createClass({
     if (!this.state.game){
       var inputForm = this.getInputForm();
       var result = this.getResult();
-
       return(
         <div>
           {result}

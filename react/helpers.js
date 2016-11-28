@@ -1,4 +1,4 @@
-import { base } from './config.js'
+import { base } from './config'
 
 var random = function (min, max) {
 	if (arguments.length == 1) {
@@ -20,11 +20,12 @@ var clone = function (obj) {
 }
 
 var makeUrl = function (path) {
-    return base + path;
+  var url = base + '/' + path;
+  return url.replace(/\/+/g, '/');
 }
-
 
 module.exports = {
 	random: random,
-	clone: clone
+	clone: clone,
+  makeUrl: makeUrl
 };

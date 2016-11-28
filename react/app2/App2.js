@@ -21,9 +21,9 @@ function Index(props){
 var Selector = React.createClass({
   handleClick(e){
     if(e.target.id == 1){
-      this.props.router.push({ pathname: makeUrl('/app1/game') });
+      this.props.router.push({ pathname: makeUrl('/app2/game') });
     }else{
-        this.props.router.push({ pathname: makeUrl('/app1/history') });
+        this.props.router.push({ pathname: makeUrl('/app2/history') });
     }
   },
   render(){
@@ -42,7 +42,7 @@ var Selector = React.createClass({
 
 
 module.exports = {
-    path: 'app1',
+  path: 'app2',
   component: Index,
   indexRoute: {component: Selector},
   childRoutes: [

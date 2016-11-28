@@ -10,7 +10,7 @@ module.exports = {
         inline: true,
         port: 7777,
       contentBase: [
-        __dirname + '/templates/',
+        //__dirname + '/templates/',
         __dirname + '/static/',
         __dirname + '/react/'
       ]
@@ -26,7 +26,12 @@ module.exports = {
                         cacheDirectory: true,
                         presets: ['es2015', 'react']
                     }
-                }
+                },
+              {test: /\.css/, loader: 'style-loader!css-loader'},
+              {
+        test: /\.less$/,
+        loader: "style-loader!css-loader!less-loader"
+      }
             ]
         }
 };

@@ -59,7 +59,7 @@ def fetch_data(query, params=None):
     return convert_to_float_rec(cur.fetchall())
 
 
-@app.route('/app1/result', methods=['POST', 'GET'])
+@app.route('/app1/result', methods=['POST', 'GET', 'DELETE'])
 def app1Result():
     if request.method == 'POST':
         request_data = parseJson(request.data)
@@ -93,6 +93,11 @@ def app1Result():
                  'FROM app1 ')
         data = fetch_data(query)
         return jsonify(result = data)
+    elif request.method == 'DELETE':
+        query = ('DELETE FROM app1')
+        g.db.cursor().execute(query)
+        g.db.commit()
+        return jsonify(result = 'success')
 
 
 @app.route('/app1/download', methods=['GET'])

@@ -1,3 +1,3 @@
-exports.module = {
-    base: '/physical'
+module.exports= {
+  base: '/'
 }

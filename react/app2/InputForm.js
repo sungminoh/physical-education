@@ -1,6 +1,10 @@
 import React from 'react';
 import { Form, FormGroup, ControlLabel, FormControl, Button, Row } from 'react-bootstrap';
 
+require('rc-slider/assets/index.css');
+import Rcslider from 'rc-slider';
+
+
 var InputForm = React.createClass({
   PropTypes: {
     onClick: React.PropTypes.func.isRequired
@@ -8,7 +12,8 @@ var InputForm = React.createClass({
 
   getInitialState() {
     return {
-      value: 10,
+      numberOfGames: 3,
+      size: 50,
       validity: true
     };
   },
@@ -21,14 +26,20 @@ var InputForm = React.createClass({
     }
   },
 
-  handleChange(e) {
-    const parsedValue = parseInt(e.target.value);
-    this.setState({validity: !isNaN(parsedValue) && parsedValue != 0});
-    this.setState({ value: e.target.value });
+  changeNumber(e) {
+    const parsedNumberOfGames = parseInt(e.target.value);
+    this.setState({validity: !isNaN(parsedNumberOfGames) && parsedNumberOfGames != 0});
+    this.setState({ numberOfGames: e.target.value});
+  },
+
+  changeSize(e) {
+    const parsedSize = parseInt(e);
+    this.setState({validity: !isNaN(parsedSize) && parsedSize != 0});
+    this.setState({ size: e });
   },
 
   startGame(){
-    this.props.onClick(parseInt(this.state.value));
+    this.props.onClick(parseInt(this.state.numberOfGames), parseInt(this.state.size));
   },
 
   render() {
@@ -39,10 +50,18 @@ var InputForm = React.createClass({
           {' '}
           <FormControl
             type='text'
-            placeholder={this.state.value}
-            onChange={this.handleChange}
+            placeholder={this.state.numberOfGames}
+            onChange={this.changeNumber}
           />
           <FormControl.Feedback/>
+        </FormGroup>
+        {' '}
+        <FormGroup validationState={this.getValidationState()}>
+          <ControlLabel>크기:</ControlLabel>
+          {' '}
+          <Rcslider
+            defaultnumberOfGames={50}
+            onChange={this.changeSize}/>
         </FormGroup>
         {' '}
         <Button
