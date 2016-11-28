@@ -1,3 +1,5 @@
+import { base } from './config.js'
+
 var random = function (min, max) {
 	if (arguments.length == 1) {
 		max = min;
@@ -16,6 +18,11 @@ var clone = function (obj) {
 	}
 	return newObj;
 }
+
+var makeUrl = function (path) {
+    return base + path;
+}
+
 
 module.exports = {
 	random: random,

@@ -158,8 +158,8 @@ var Game = React.createClass({
 
   getTarget(){
     if (this.state.game && this.state.targetDisplay){
-      var left = random(100) + '%'
-      var top = random(100) + '%'
+      var left = random(10, 90) + '%'
+      var top = random(10, 90) + '%'
       var width = 100 * Math.pow(0.8, this.state.count)
       var set
       return (

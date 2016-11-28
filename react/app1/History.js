@@ -68,14 +68,14 @@ var History = React.createClass({
       });
   },
   redirectToGame(e){
-    this.props.router.push({ pathname: '/app1/game' });
+      this.props.router.push({ pathname: '/physical/app1/game' });
   },
   render(){
     return (
       <div>
         <Button onClick={this.redirectToGame}> 게임 하기 </Button>
         {' '}
-        <Form inline style={{margin:"0", display:"inline"}} method='get' action='/app1/download'>
+        <Form inline style={{margin:"0", display:"inline"}} method='get' action='/physical/app1/download'>
           <Button type='submit' > 저장 하기 </Button>
         </Form>
         <Table responsive>
