@@ -71,17 +71,28 @@ var History = React.createClass({
   redirectToGame(e){
       this.props.router.push({ pathname: makeUrl('/app1/game') });
   },
+  requestRemoveAll(e){
+    fetch(makeUrl('/app1/result'), { method: 'DELETE', accept: 'application/json'})
+      .then((response) => response.ok)
+      .then((responseOk) => {
+        if(responseOk){
+            this.setState({fetched: false});
+        }
+      })
+      .catch((error) => {
+          alert('데이터를 삭제하는데 실패하였습니다. 다시 시도하세요.');
+      });
+  },
   render(){
     return (
       <div>
         <Button onClick={this.redirectToGame}> 게임 하기 </Button>
         {' '}
-        <Form inline style={{margin:"0", display:"inline"}} method='get' action={makeUrl('/app1/download')}>
+        <Form inline style={{margin:"0", display:"inline"}} method='GET' action={makeUrl('/app1/download')}>
           <Button type='submit' > 저장 하기 </Button>
         </Form>
-        <Form inline style={{margin:"0", display:"inline"}} method='delete' action={makeUrl('/app1/result')}>
-          <Button type='submit' > 전체 삭제 </Button>
-        </Form>
+        {' '}
+        <Button onClick={this.requestRemoveAll} > 전체 삭제 </Button>
 
         <Table responsive>
           <thead>

@@ -123,3 +123,5 @@ chrome-user-data
 
 # application security
 db_info.py
+app.ini
+react/config.js

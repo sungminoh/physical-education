@@ -237,7 +237,6 @@ var Game = React.createClass({
         <div>
           {result}
           {inputForm}
-          {score}
         </div>
       );
 
@@ -265,6 +264,7 @@ var Game = React.createClass({
           onTouchEnd={this.hitTargetTouchEnd}
           onMouseUp={this.hitTargetTouchEnd}
         >
+          {score}
           {countdownTimer}
           {target}
         </Grid>

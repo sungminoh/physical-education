@@ -7,8 +7,6 @@ import App2 from './app2/App2';
 import { makeUrl } from './helpers';
 import { base } from './config';
 
-import Game from './app2/Game';
-
 
 function Index(props){
   return props.children;
@@ -45,8 +43,8 @@ var Selector = React.createClass({
 
 const routes = {
   path: base,
-  //component:Index,
-  component:Game,
+  component:Index,
+  //component:Game,
   indexRoute: {component: Selector},
   childRoutes:[
     App1,
