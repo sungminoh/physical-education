@@ -23,7 +23,7 @@ var Selector = React.createClass({
     if(e.target.id == 1){
       this.props.router.push({ pathname: makeUrl('/app1/game') });
     }else{
-        this.props.router.push({ pathname: makeUrl('/app1/history') });
+      this.props.router.push({ pathname: makeUrl('/app1/history') });
     }
   },
   render(){
@@ -42,7 +42,7 @@ var Selector = React.createClass({
 
 
 module.exports = {
-    path: 'app1',
+  path: 'app1',
   component: Index,
   indexRoute: {component: Selector},
   childRoutes: [

@@ -10,15 +10,13 @@ var TableRow = React.createClass({
     return (
       <tr>
         <td>{this.props.idx}</td>
-        <td>{this.props.target_x}</td>
-        <td>{this.props.target_y}</td>
-        <td>{this.props.target_r}</td>
-        <td>{this.props.touch_x}</td>
-        <td>{this.props.touch_y}</td>
+        <td>{this.props.phoneNumber}</td>
         <td>{this.props.touch_s}</td>
         <td>{this.props.touch_d}</td>
         <td>{this.props.accuracy}</td>
         <td>{this.props.delay}</td>
+        <td>{this.props.buttonWidth}</td>
+        <td>{this.props.buttonHeight}</td>
         <td>{dateText}</td>
       </tr>
     )
@@ -34,16 +32,14 @@ function  getList(data){
       <TableRow
         key={i+1}
         idx={row[0]}
-        target_x={row[1]}
-        target_y={row[2]}
-        target_r={row[3]}
-        touch_x={row[4]}
-        touch_y={row[5]}
-        touch_s={row[6]}
-        touch_d={row[7]}
-        accuracy={row[8]}
-        delay={row[9]}
-        ts={row[10]}
+        phoneNumber={row[1]}
+        touch_s={row[2]}
+        touch_d={row[3]}
+        accuracy={row[4]}
+        delay={row[5]}
+        buttonWidth={row[6]}
+        buttonHeight={row[7]}
+        ts={row[8]}
       />
     )
   }
@@ -58,7 +54,7 @@ var History = React.createClass({
     }
   },
   getResultHistory(){
-      fetch(makeUrl('/app1/result'), { method: 'GET', accept: 'application/json'})
+    fetch(makeUrl('/app2/result'), { method: 'GET', accept: 'application/json'})
       .then((response) => response.json())
       .then((responseJson) => {
         this.data = responseJson.result;
@@ -69,33 +65,43 @@ var History = React.createClass({
       });
   },
   redirectToGame(e){
-      this.props.router.push({ pathname: makeUrl('/app1/game') });
+    this.props.router.push({ pathname: makeUrl('/app2/game') });
+  },
+  requestRemoveAll(e){
+    fetch(makeUrl('/app2/result'), { method: 'DELETE', accept: 'application/json'})
+      .then((response) => response.ok)
+      .then((responseOk) => {
+        if(responseOk){
+          this.setState({fetched: false});
+          alert('데이터를 성공적으로 삭제하였습니다.');
+        }
+      })
+      .catch((error) => {
+        alert('데이터를 삭제하는데 실패하였습니다. 다시 시도하세요.');
+      });
   },
   render(){
     return (
       <div>
         <Button onClick={this.redirectToGame}> 게임 하기 </Button>
         {' '}
-        <Form inline style={{margin:"0", display:"inline"}} method='get' action={makeUrl('/app1/download')}>
+        <Form inline style={{margin:"0", display:"inline"}} method='get' action={makeUrl('/app2/download')}>
           <Button type='submit' > 저장 하기 </Button>
         </Form>
-        <Form inline style={{margin:"0", display:"inline"}} method='delete' action={makeUrl('/app1/result')}>
-          <Button type='submit' > 전체 삭제 </Button>
-        </Form>
+        {' '}
+        <Button onClick={this.requestRemoveAll} > 전체 삭제 </Button>
 
         <Table responsive>
           <thead>
             <tr>
               <th>실험 번호</th>
-              <th>타겟 x</th>
-              <th>타겟 y</th>
-              <th>타겟 r</th>
-              <th>터치 x</th>
-              <th>터치 y</th>
+              <th>전화 번호</th>
               <th>터치 크기</th>
               <th>터치 시간</th>
               <th>오차</th>
-              <th>반응 시간</th>
+              <th>소요 시간</th>
+              <th>버튼 폭</th>
+              <th>버튼 높이</th>
               <th>실험 시각</th>
             </tr>
           </thead>

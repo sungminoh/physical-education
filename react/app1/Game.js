@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import fetch from 'whatwg-fetch';
 import distance from 'euclidean-distance'
-import CountdownTimer from './CountdownTimer';
+import CountdownTimer from '../CountdownTimer';
 import Target from './Target';
 import InputForm from './InputForm'
 import Score from './Score';
@@ -132,7 +132,7 @@ var Game = React.createClass({
   },
 
   redirectToHistory(e){
-      this.props.router.push({ pathname: makeUrl('/app1/history') });
+    this.props.router.push({ pathname: makeUrl('/app1/history') });
   },
 
   getInputForm(){

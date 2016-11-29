@@ -84,34 +84,34 @@ var Result = React.createClass({
   render() {
     return (
       //<div className="static-modal">
-        <Modal.Dialog style={{overflowY: 'auto'}}>
-          <Modal.Header>
-            <Modal.Title>결과</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>반응시간</th>
-                  <th>터치시간</th>
-                  <th>터치크기</th>
-                  <th>오차</th>
-                  <th>반지름</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.getAvergeTr()}
-                {this.getList()}
-              </tbody>
-            </Table>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.props.reset}>닫기</Button>
-            <Button bsStyle="primary" onClick={this.sendResult} disabled={this.state.saved}>저장</Button>
-          </Modal.Footer>
-        </Modal.Dialog>
-      //</div>
+      <Modal.Dialog style={{overflowY: 'auto'}}>
+        <Modal.Header>
+          <Modal.Title>결과</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>반응시간</th>
+                <th>터치시간</th>
+                <th>터치크기</th>
+                <th>오차</th>
+                <th>반지름</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.getAvergeTr()}
+              {this.getList()}
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.props.reset}>닫기</Button>
+          <Button bsStyle="primary" onClick={this.sendResult} disabled={this.state.saved}>저장</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+        //</div>
     );
   },
 
@@ -124,7 +124,7 @@ var Result = React.createClass({
       },
       body: JSON.stringify(this.props)
     }
-      fetch(makeUrl('/app1/result'), requestHeader)
+    fetch(makeUrl('/app1/result'), requestHeader)
       .then((response) => {
         if (response.ok){
           alert('성공적으로 저장되었습니다.');

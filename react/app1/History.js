@@ -58,7 +58,7 @@ var History = React.createClass({
     }
   },
   getResultHistory(){
-      fetch(makeUrl('/app1/result'), { method: 'GET', accept: 'application/json'})
+    fetch(makeUrl('/app1/result'), { method: 'GET', accept: 'application/json'})
       .then((response) => response.json())
       .then((responseJson) => {
         this.data = responseJson.result;
@@ -69,18 +69,19 @@ var History = React.createClass({
       });
   },
   redirectToGame(e){
-      this.props.router.push({ pathname: makeUrl('/app1/game') });
+    this.props.router.push({ pathname: makeUrl('/app1/game') });
   },
   requestRemoveAll(e){
     fetch(makeUrl('/app1/result'), { method: 'DELETE', accept: 'application/json'})
       .then((response) => response.ok)
       .then((responseOk) => {
         if(responseOk){
-            this.setState({fetched: false});
+          this.setState({fetched: false});
+          alert('데이터를 성공적으로 삭제하였습니다.');
         }
       })
       .catch((error) => {
-          alert('데이터를 삭제하는데 실패하였습니다. 다시 시도하세요.');
+        alert('데이터를 삭제하는데 실패하였습니다. 다시 시도하세요.');
       });
   },
   render(){

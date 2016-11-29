@@ -6,6 +6,7 @@ import App1 from './app1/App1';
 import App2 from './app2/App2';
 import { makeUrl } from './helpers';
 import { base } from './config';
+import Game from './app2/Game';
 
 
 function Index(props){

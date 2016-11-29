@@ -13,7 +13,7 @@ var InputForm = React.createClass({
   getInitialState() {
     return {
       numberOfGames: 3,
-      size: 50,
+      size: 70,
       validity: true
     };
   },
@@ -36,15 +36,16 @@ var InputForm = React.createClass({
     const parsedSize = parseInt(e);
     this.setState({validity: !isNaN(parsedSize) && parsedSize != 0});
     this.setState({ size: e });
+    this.props.changeSize(e);
   },
 
   startGame(){
-    this.props.onClick(parseInt(this.state.numberOfGames), parseInt(this.state.size));
+    this.props.onClick(parseInt(this.state.numberOfGames));
   },
 
   render() {
     return (
-      <Form inline style={{margin: 10}}>
+      <Form style={{margin: 10}}>
         <FormGroup validationState={this.getValidationState()} >
           <ControlLabel>횟수:</ControlLabel>
           {' '}
@@ -60,7 +61,9 @@ var InputForm = React.createClass({
           <ControlLabel>크기:</ControlLabel>
           {' '}
           <Rcslider
-            defaultnumberOfGames={50}
+            min={10}
+            max={100}
+            defaultValue={this.props.defaultValue}
             onChange={this.changeSize}/>
         </FormGroup>
         {' '}
