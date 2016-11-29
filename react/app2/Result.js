@@ -97,12 +97,12 @@ var Result = React.createClass({
     var ret = [];
     for (var i=0; i<this.props.results.length; i++){
       var result = this.props.results[i];
-      var avgOfDelays = average(result.delays);
+      var delay = result.delays[result.delays.length - 1];
       var avgOfTouchDurations = average(result.touchDurations);
       var avgOfTouchSizes = average(result.touchSizes);
       var avgOfAccuracies = average(result.accuracies);
       var phoneNumber = result.phoneNumber;
-      this.results.delays.push(avgOfDelays);
+      this.results.delays.push(delay);
       this.results.touchDurations.push(avgOfTouchDurations);
       this.results.touchSizes.push(avgOfTouchSizes);
       this.results.accuracies.push(avgOfAccuracies);
@@ -114,7 +114,7 @@ var Result = React.createClass({
           key={i+1}
           idx={i+1}
           phoneNumber={phoneNumber}
-          delay={avgOfDelays}
+          delay={delay}
           touchDuration={avgOfTouchDurations}
           touchSize={avgOfTouchSizes}
           accuracy={avgOfAccuracies}
@@ -124,6 +124,16 @@ var Result = React.createClass({
       )
     }
     return ret;
+  },
+  reset(){
+    this.props.reset();
+    this.results.delays = [];
+    this.results.touchDurations = [];
+    this.results.touchSizes = [];
+    this.results.accuracies = [];
+    this.results.phoneNumbers = [];
+    this.results.buttonWidths = [];
+    this.results.buttonHeights = [];
   },
 
   render() {
@@ -154,7 +164,7 @@ var Result = React.createClass({
           </Table>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.reset}>닫기</Button>
+          <Button onClick={this.reset}>닫기</Button>
           <Button bsStyle="primary" onClick={this.sendResult} disabled={this.state.saved}>저장</Button>
         </Modal.Footer>
       </Modal.Dialog>

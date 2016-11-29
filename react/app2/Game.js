@@ -225,14 +225,14 @@ var Game = React.createClass({
       return (
         <div
           style={{
-            height: this.state.panelHeight*0.8,
+            height: this.state.panelHeight*0.3,
               textAlign: 'center',
-              marginTop: this.state.panelHeight*0.8/2
+              marginTop: this.state.panelHeight*0.3/2
           }}
         >
           <span
             style={{
-              fontSize: 40
+              fontSize: this.state.panelHeight*0.2
             }}>
             {phoneNumberString}
           </span>
@@ -318,7 +318,7 @@ var Game = React.createClass({
         >
           <span
             style={{
-              fontSize: 30
+              fontSize: this.state.panelHeight*0.15
             }}>
             {typedString}
           </span>
@@ -365,7 +365,7 @@ var Game = React.createClass({
     if(!div) return;
     if(this.state.numpadMaxHeight == 0){
       var divHeight = div.getBoundingClientRect().height;
-      var remainder = window.screen.height - divHeight;
+      var remainder = window.innerHeight - divHeight;
       this.setState({
         numpadMaxHeight: remainder,
         panelHeight: divHeight
