@@ -30,15 +30,10 @@ function genPhoneNumber(){
     regionalNumber + '-' +
     phoneNumber.slice(rl, rl == 2 ? rl + 4 : rl + 3).join('') + '-' +
     phoneNumber.slice(6,10).join('');
-  //return {
-  //'phoneNumberString': phoneNumberString,
-  //'phoneNumber': phoneNumber
-  //}
   return {
-    'phoneNumberString': '00-00',
-    'phoneNumber': [0,0,0,0]
+  'phoneNumberString': phoneNumberString,
+  'phoneNumber': phoneNumber
   }
-
 }
 
 
