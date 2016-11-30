@@ -50,7 +50,7 @@ var InputForm = React.createClass({
           <ControlLabel>횟수:</ControlLabel>
           {' '}
           <FormControl
-            type='text'
+            type='number'
             placeholder={this.state.numberOfGames}
             onChange={this.changeNumber}
           />
