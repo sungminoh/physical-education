@@ -7,7 +7,7 @@ from pdb import set_trace as bp
 import time
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 
 @app.before_request
