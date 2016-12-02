@@ -306,8 +306,10 @@ var Game = React.createClass({
       var pn = this.state.phoneNumberString;
       pn = pn.split('-');
       var l = pn[0].length;
+      var ml = (l == 2 ? 4 : 3);
       var typed = this.state.typed;
-      var typedString = typed.slice(0, l) + '-' + typed.slice(l, l+3) + '-' + typed.slice(l+3, l+7);
+      var typedString = typed.slice(0, l) + '-' +
+        typed.slice(l, l+ml) + '-' + typed.slice(l+ml, l+ml+4);
       return (
         <div
           style={{
