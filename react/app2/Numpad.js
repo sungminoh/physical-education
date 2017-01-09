@@ -22,8 +22,7 @@ var NumButton = React.createClass({
       height: this.state.size,
       maxWidth: '100%',
       maxHeight: this.state.maxHeight,
-      fontSize: Math.min(this.state.size, this.state.maxHeight)/2,
-      borderRadius: '50%'
+      fontSize: Math.min(this.state.size, this.state.maxHeight)/2
     };
     var id = this.props.num;
     var className = 'misc';
