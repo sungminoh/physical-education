@@ -15,6 +15,7 @@ var TableRow = React.createClass({
         <td>{this.props.touch_d}</td>
         <td>{this.props.accuracy}</td>
         <td>{this.props.delay}</td>
+        <td>{this.props.numpadSize}</td>
         <td>{this.props.buttonWidth}</td>
         <td>{this.props.buttonHeight}</td>
         <td>{dateText}</td>
@@ -37,9 +38,10 @@ function  getList(data){
         touch_d={row[3]}
         accuracy={row[4]}
         delay={row[5]}
-        buttonWidth={row[6]}
-        buttonHeight={row[7]}
-        ts={row[8]}
+        numpadSize={row[6]}
+        buttonWidth={row[7]}
+        buttonHeight={row[8]}
+        ts={row[9]}
       />
     )
   }
@@ -100,6 +102,7 @@ var History = React.createClass({
               <th>터치 시간</th>
               <th>오차</th>
               <th>소요 시간</th>
+              <th>타입</th>
               <th>버튼 폭</th>
               <th>버튼 높이</th>
               <th>실험 시각</th>

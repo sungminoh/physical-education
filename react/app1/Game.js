@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import fetch from 'whatwg-fetch';
-import distance from 'euclidean-distance'
 import CountdownTimer from '../CountdownTimer';
+import distance from 'euclidean-distance'
 import Target from './Target';
 import InputForm from './InputForm'
 import Score from './Score';
 import Result from './Result';
-import { random, makeUrl } from '../helpers';
+import { random, makeUrl, pxToMm } from '../helpers';
 import { Button, Grid, Row, Col } from 'react-bootstrap';
 
 
@@ -76,11 +76,11 @@ var Game = React.createClass({
     this.delays.push((Date.now() - this.targetAppearedTime)/1000.0);
     var x, y;
     if(e.type == 'touchstart'){
-      x = e.targetTouches[0].clientX;
-      y = e.targetTouches[0].clientY;
+      x = pxToMm(e.targetTouches[0].clientX);
+      y = pxToMm(e.targetTouches[0].clientY);
     }else{
-      x = e.clientX;
-      y = e.clientY;
+      x = pxToMm(e.clientX);
+      y = pxToMm(e.clientY);
     }
     this.touches.push([x, y]);
     this.accuracies.push(distance(this.targetPositions[this.targetPositions.length-1], [x, y]));
@@ -95,11 +95,11 @@ var Game = React.createClass({
     e.preventDefault();
     var x, y;
     if(e.type == 'touchend'){
-      x = e.changedTouches[0].clientX;
-      y = e.changedTouches[0].clientY;
+      x = pxToMm(e.changedTouches[0].clientX);
+      y = pxToMm(e.changedTouches[0].clientY);
     }else{
-      x = e.clientX;
-      y = e.clientY;
+      x = pxToMm(e.clientX);
+      y = pxToMm(e.clientY);
     }
     this.touchSizes.push(distance(this.touches[this.touches.length-1], [x, y]));
     this.touchDurations.push((Date.now() - this.touchStartTime)/1000.0);
@@ -176,8 +176,8 @@ var Game = React.createClass({
   },
   setTargetCoordinate(coordinate){
     var [x, y, r] = coordinate;
-    this.targetPositions.push([x, y]);
-    this.targetRadii.push(r/2);
+    this.targetPositions.push([pxToMm(x), pxToMm(y)]);
+    this.targetRadii.push(pxToMm(r/2));
   },
 
   getCountdownTimer(){

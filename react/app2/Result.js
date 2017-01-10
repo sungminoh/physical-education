@@ -48,15 +48,13 @@ var Result = React.createClass({
 
   propTypes: {
     results: React.PropTypes.array,
-    //var result = {
-    //'phoneNumber': this.state.phoneNumberString,
-    //'touchDurations': this.touchDurations,
-    //'touchSizes': this.touchSizes,
-    //'accuracies': this.accuracies,
-    //'delays': this.delays
-    //}
     buttonSpec: React.PropTypes.object,
+    numpadSize: React.PropTypes.string,
     reset: React.PropTypes.func
+  },
+
+  componentWillMount(){
+    this.results.numpadSize = this.props.numpadSize;
   },
 
   getAvergeTr(){
@@ -91,7 +89,8 @@ var Result = React.createClass({
     'accuracies': [],
     'phoneNumbers': [],
     'buttonWidths': [],
-    'buttonHeights': []
+    'buttonHeights': [],
+    'numpadSize': null,
   },
   getList(){
     var ret = [];
@@ -151,10 +150,10 @@ var Result = React.createClass({
                 <th>번호</th>
                 <th>소요시간</th>
                 <th>평균터치시간</th>
-                <th>평균터치크기</th>
-                <th>평균오차</th>
-                <th>버튼높이</th>
-                <th>버튼폭</th>
+                <th>평균터치크기 (mm)</th>
+                <th>평균오차 (mm)</th>
+                <th>버튼높이 (mm)</th>
+                <th>버튼폭 (mm)</th>
               </tr>
             </thead>
             <tbody>

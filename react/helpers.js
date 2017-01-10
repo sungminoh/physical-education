@@ -1,4 +1,6 @@
 import { base } from './config'
+import distance from 'euclidean-distance'
+
 
 var random = function (min, max) {
 	if (arguments.length == 1) {
@@ -24,8 +26,19 @@ var makeUrl = function (path) {
   return url.replace(/\/+/g, '/');
 }
 
+function pxToMm(pixel){
+  var dpi = document.getElementById('dpi').offsetHeight;
+  return 24.5 * pixel / dpi
+}
+
+function dist(p1, p2){
+  return distance([pxToMm(p1[0]), pxToMm(p1[1])], [pxToMm(p2[0]), pxToMm(p2[1])]);
+}
+
 module.exports = {
 	random: random,
 	clone: clone,
-  makeUrl: makeUrl
+  makeUrl: makeUrl,
+  distance: dist,
+  pxToMm: pxToMm
 };

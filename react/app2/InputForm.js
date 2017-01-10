@@ -13,7 +13,7 @@ var InputForm = React.createClass({
   getInitialState() {
     return {
       numberOfGames: 3,
-      size: 70,
+      numpadSize: this.props.defaultValue,
       validity: true
     };
   },
@@ -33,14 +33,11 @@ var InputForm = React.createClass({
   },
 
   changeSize(e) {
-    const parsedSize = parseInt(e);
-    this.setState({validity: !isNaN(parsedSize) && parsedSize != 0});
-    this.setState({ size: e });
-    this.props.changeSize(e);
+    this.setState({ numpadSize: e.target.value });
   },
 
   startGame(){
-    this.props.onClick(parseInt(this.state.numberOfGames));
+    this.props.onClick(this.state.numberOfGames, this.state.numpadSize);
   },
 
   render() {
@@ -60,11 +57,11 @@ var InputForm = React.createClass({
         <FormGroup validationState={this.getValidationState()}>
           <ControlLabel>크기:</ControlLabel>
           {' '}
-          <Rcslider
-            min={10}
-            max={100}
-            defaultValue={this.props.defaultValue}
-            onChange={this.changeSize}/>
+          <select value={this.state.numpadSize} onChange={this.changeSize}>
+            <option value='iphone'>아이폰5s</option>
+            <option value='galaxy'>갤럭시S5</option>
+            <option value='note'>갤럭시노트5</option>
+          </select>
         </FormGroup>
         {' '}
         <Button

@@ -26,7 +26,7 @@ var Score = React.createClass({
       <div style={scoreStyle}>
         <ul>
           <li>반응시간 : {delay} sec</li>
-          <li>정확도 : {accuracy} pixels</li>
+          <li>정확도 : {accuracy} mm</li>
           <li>회수 : {this.props.count}/{this.props.numberOfGames}</li>
         </ul>
       </div>

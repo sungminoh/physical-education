@@ -6,8 +6,9 @@ import CountdownTimer from '../CountdownTimer';
 import InputForm from './InputForm'
 import Result from './Result';
 import Numpad from './Numpad';
-import { random, makeUrl } from '../helpers';
+import { random, makeUrl, pxToMm } from '../helpers';
 import { Button, Grid, Row, Col } from 'react-bootstrap';
+
 
 function genPhoneNumber(){
   var regionalNumbers = [
@@ -45,9 +46,7 @@ var Game = React.createClass({
       targetDisplay: false,
       done: false,
       numberOfGames: 0,
-      numpadSize: 50,
-      numpadMaxHeight: 0,
-      panelHeight: 0,
+      numpadSize: 'galaxy',
       phoneNumberString: '',
       typed: ''
     };
@@ -84,7 +83,7 @@ var Game = React.createClass({
     this.results = [];
   },
 
-  startGame(n) {
+  startGame(n, size) {
     var phoneNumberObj = genPhoneNumber();
     var phoneNumberString = phoneNumberObj.phoneNumberString;
     var phoneNumber = phoneNumberObj.phoneNumber;
@@ -94,6 +93,7 @@ var Game = React.createClass({
       targetDisplay: false,
       numberOfGames: n,
       phoneNumberString: phoneNumberString,
+      numpadSize: size ? size : this.state.numpadSize,
       typed: ''
     });
     this.phoneNumber = phoneNumber;
@@ -128,7 +128,7 @@ var Game = React.createClass({
     e.preventDefault();
     var id = e.target.id;
     // if call
-    if(id == 'call' && this.currentIdx == this.phoneNumber.length){
+    if(id == 'call' && this.state.typed == this.phoneNumber.join('')){
       this.nextNumber();
       return;
     }
@@ -140,24 +140,26 @@ var Game = React.createClass({
     var newTyped = this.state.typed+e.target.textContent;
     this.setState({typed: newTyped});
     // if it is not correct then return
-    if(newTyped != this.phoneNumber.join('').slice(0, this.currentIdx+1)) return;
-    this.currentIdx += 1;
+    //if(newTyped != this.phoneNumber.join('').slice(0, this.currentIdx+1)) return;
+    //this.currentIdx += 1;
+    if(newTyped != this.phoneNumber.join('').slice(0, newTyped.length)) return;
+    this.currentIdx = newTyped.length;
     // delay and coordinates
     this.delays.push((Date.now() - this.numberAppeardTime)/1000.0);
     var x, y;
     if(e.type == 'touchstart'){
-      x = e.targetTouches[0].clientX;
-      y = e.targetTouches[0].clientY;
+      x = pxToMm(e.targetTouches[0].clientX);
+      y = pxToMm(e.targetTouches[0].clientY);
     }else{
-      x = e.clientX;
-      y = e.clientY;
+      x = pxToMm(e.clientX);
+      y = pxToMm(e.clientY);
     }
     this.touches.push([x, y]);
     var specs = e.target.getBoundingClientRect()
-    var target_x = (specs.left + specs.right)/2
-    var target_y = (specs.top + specs.bottom)/2
+    var target_x = pxToMm((specs.left + specs.right)/2);
+    var target_y = pxToMm((specs.top + specs.bottom)/2);
     if(!this.buttonSpec){
-      this.buttonSpec = {'width': specs.width, 'height': specs.height};
+      this.buttonSpec = {'width': pxToMm(specs.width), 'height': pxToMm(specs.height)};
     }
     this.accuracies.push(distance([target_x, target_y], [x, y]));
     this.touchStartTime = Date.now()
@@ -171,11 +173,11 @@ var Game = React.createClass({
     e.preventDefault();
     var x, y;
     if(e.type == 'touchend'){
-      x = e.changedTouches[0].clientX;
-      y = e.changedTouches[0].clientY;
+      x = pxToMm(e.changedTouches[0].clientX);
+      y = pxToMm(e.changedTouches[0].clientY);
     }else{
-      x = e.clientX;
-      y = e.clientY;
+      x = pxToMm(e.clientX);
+      y = pxToMm(e.clientY);
     }
     this.touchSizes.push(distance(this.touches[this.touches.length-1], [x, y]));
     this.touchDurations.push((Date.now() - this.touchStartTime)/1000.0);
@@ -193,7 +195,7 @@ var Game = React.createClass({
     this.props.router.push({ pathname: makeUrl('/app2/history') });
   },
 
-  changeSlider(size){
+  changeSize(size){
     this.setState({numpadSize: size});
   },
 
@@ -211,7 +213,7 @@ var Game = React.createClass({
           onClick={this.startGame}
           additionalButtons={historyButton}
           defaultValue={this.state.numpadSize}
-          changeSize={this.changeSlider}
+          changeSize={this.changeSize}
         />
       );
     }else{
@@ -225,15 +227,11 @@ var Game = React.createClass({
       return (
         <div
           style={{
-            height: this.state.panelHeight*0.3,
-              textAlign: 'center',
-              marginTop: this.state.panelHeight*0.3/2
+            textAlign: 'center',
           }}
         >
           <span
-            style={{
-              fontSize: this.state.panelHeight*0.2
-            }}>
+            style={{ fontSize: 30 }}>
             {phoneNumberString}
           </span>
         </div>
@@ -272,6 +270,7 @@ var Game = React.createClass({
         <Result
           results={this.results}
           buttonSpec={this.buttonSpec}
+          numpadSize={this.state.numpadSize}
           reset={this.resetComponent}
         />
       )
@@ -280,23 +279,16 @@ var Game = React.createClass({
     }
   },
   getNumpad(){
-    if (this.state.numpadMaxHeight != 0){
-      return(
-        <div
-          onTouchStart={this.hitNumberTouchStart}
-          onMouseDown={this.hitNumberTouchStart}
-          onTouchEnd={this.hitNumberTouchEnd}
-          onMouseUp={this.hitNumberTouchEnd}
-        >
-          <Numpad
-            size={this.state.numpadSize}
-            maxHeight={this.state.numpadMaxHeight}
-          />
-        </div>
-      );
-    }else{
-      return null;
-    }
+    return(
+      <div
+        onTouchStart={this.hitNumberTouchStart}
+        onMouseDown={this.hitNumberTouchStart}
+        onTouchEnd={this.hitNumberTouchEnd}
+        onMouseUp={this.hitNumberTouchEnd}
+      >
+        <Numpad size={this.state.numpadSize} />
+      </div>
+    );
   },
   deleteTyped(){
     this.setState({typed: this.state.typed.slice(0, this.state.typed.length-1)});
@@ -311,21 +303,19 @@ var Game = React.createClass({
       var typedString = typed.slice(0, l) + '-' +
         typed.slice(l, l+ml) + '-' + typed.slice(l+ml, l+ml+4);
       return (
-        <div
-          style={{
-            height: this.state.panelHeight*0.2,
-              textAlign: 'center',
-              marginTop: this.state.panelHeight*0.2/2
-          }}
-        >
-          <span
-            style={{
-              fontSize: this.state.panelHeight*0.15
-            }}>
+        <div style={{ textAlign: 'center', marginTop: 10, marginBottom: 10}} >
+          <span style={{ fontSize: 20, verticalAlign: 'bottom'}}>
             {typedString}
           </span>
           <Button
-            style={{float: 'right', position:'absolute'}}
+            style={{
+              background: 'white',
+              height: 26,
+              fontSize: 10,
+              float: 'right',
+              marginLeft: 5,
+              position: 'absolute'
+            }}
             onClick={this.deleteTyped}>DEL</Button>
         </div>
       );
@@ -334,44 +324,36 @@ var Game = React.createClass({
     }
   },
   render() {
-    var inputForm = this.getInputForm();
-    var result = this.getResult();
-    var countdownTimer = this.getCountdownTimer();
-    var phoneNumber = this.getPhoneNumber();
-    //var score = this.getScore();
-    var numpad = this.getNumpad();
-    var typedNumber = this.getTypedNumber();
-
     if(!this.state.game){
+      var inputForm = this.getInputForm();
+      var result = this.getResult();
       return (
-        <div style={{height:'100vh'}} >
+        <div style={{height:window.innerHeight}} >
           {result}
-          <div ref={(div) => this.setHeight(div)} >
+          <div>
             {inputForm}
           </div>
-          {numpad}
         </div>
       )
     }else{
-      return (
-        <div style={{height:'100vh'}} >
-          {countdownTimer}
-          {phoneNumber}
-          {typedNumber}
-          {numpad}
-        </div>
-      )
-    }
-  },
-  setHeight(div){
-    if(!div) return;
-    if(this.state.numpadMaxHeight == 0){
-      var divHeight = div.getBoundingClientRect().height;
-      var remainder = window.innerHeight - divHeight;
-      this.setState({
-        numpadMaxHeight: remainder,
-        panelHeight: divHeight
-      })
+      if(this.state.countdown){
+        var countdownTimer = this.getCountdownTimer();
+        return countdownTimer;
+      }else{
+        var phoneNumber = this.getPhoneNumber();
+        var typedNumber = this.getTypedNumber();
+        var numpad = this.getNumpad();
+        var gameStyle = {position: 'absolute', bottom: 0, width:'100%'};
+        return (
+          <div style={{height:window.innerHeight, position: 'relative'}} >
+            <div style={gameStyle}>
+              {phoneNumber}
+              {typedNumber}
+              {numpad}
+            </div>
+          </div>
+        )
+      }
     }
   },
   componentDidUpdate(prevProps, prevState){

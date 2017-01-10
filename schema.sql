@@ -24,6 +24,7 @@ CREATE TABLE app2(
     touch_d         DECIMAL(10, 4) NOT NULL,
     accuracy        DECIMAL(10, 4) NOT NULL,
     delay           DECIMAL(10, 6) NOT NULL,
+    numpad          CHAR(20),
     button_w        DECIMAL(10, 4) NOT NULL,
     button_h        DECIMAL(10, 4) NOT NULL,
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP

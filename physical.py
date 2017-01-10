@@ -136,23 +136,24 @@ def app2Result():
         accuracies = request_data['accuracies']
         button_widths = request_data['buttonWidths']
         button_heights = request_data['buttonHeights']
+        numpad_size = request_data['numpadSize']
         test_id = get_test_id('app2')
         data = [(test_id, phone_numbers[i],
                  touch_sizes[i], touch_durations[i],
                  accuracies[i], delays[i],
-                 button_widths[i], button_heights[i])
+                 numpad_size, button_widths[i], button_heights[i])
                 for i in range(len(phone_numbers))]
         query = ('INSERT INTO app2 '
                  '(test_id, phone_number, touch_s, touch_d, '
-                 'accuracy, delay, button_w, button_h) '
-                 'VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ')
+                 'accuracy, delay, numpad, button_w, button_h) '
+                 'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ')
         g.db.cursor().executemany(query, data)
         g.db.commit()
         return jsonify(result='success')
     elif request.method == 'GET':
         query = ('SELECT '
                  'test_id, phone_number, touch_s, touch_d, '
-                 'accuracy, delay, button_w, button_h, ts '
+                 'accuracy, delay, numpad, button_w, button_h, ts '
                  'FROM app2 ')
         data = fetch_data(query)
         return jsonify(result=data)
@@ -169,10 +170,10 @@ def app2Download():
         current_time_string = time.strftime('%Y-%m-%d %H:%M:%S')
         filename = ('app2(%s)' % current_time_string) + '.csv'
         header = ['test_id', 'phone_number', 'touch_size', 'touch_duration',
-                  'error', 'delay', 'button_width', 'button_height', 'timestamp']
+                  'error', 'delay', 'numpad', 'button_width', 'button_height', 'timestamp']
         query = ('SELECT '
                  'test_id, phone_number, touch_s, touch_d, '
-                 'accuracy, delay, button_w, button_h, ts '
+                 'accuracy, delay, numpad, button_w, button_h, ts '
                  'FROM app2 ')
         data = fetch_data(query)
         csvData = [','.join(header)]
