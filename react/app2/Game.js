@@ -231,7 +231,7 @@ var Game = React.createClass({
           }}
         >
           <span
-            style={{ fontSize: 30 }}>
+            style={{ fontSize: 40 }}>
             {phoneNumberString}
           </span>
         </div>
@@ -290,8 +290,32 @@ var Game = React.createClass({
       </div>
     );
   },
-  deleteTyped(){
+  deleteTyped(e){
+    console.log(e.type);
     this.setState({typed: this.state.typed.slice(0, this.state.typed.length-1)});
+  },
+  getDeleteButton(){
+    var deleteButton;
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      deleteButton = (
+        <img id='del' src='../static/erase.png' style={{
+          height: 40,
+            float: 'right',
+            position: 'absolute'
+        }}
+        onTouchStart={this.deleteTyped} />
+      );
+    }else{
+      deleteButton = (
+        <img id='del' src='../static/erase.png' style={{
+          height: 40,
+            float: 'right',
+            position: 'absolute'
+        }}
+        onClick={this.deleteTyped} />
+      );
+    }
+    return deleteButton
   },
   getTypedNumber(){
     if (this.state.game && this.state.targetDisplay){
@@ -302,21 +326,25 @@ var Game = React.createClass({
       var typed = this.state.typed;
       var typedString = typed.slice(0, l) + '-' +
         typed.slice(l, l+ml) + '-' + typed.slice(l+ml, l+ml+4);
+      //var button = (
+        //<Button
+          //style={{
+            //background: 'white',
+              //height: 26,
+              //fontSize: 10,
+              //float: 'right',
+              //marginLeft: 5,
+              //position: 'absolute'
+          //}}
+          //onClick={this.deleteTyped}>DEL</Button>
+      //);
+      var deleteButton = this.getDeleteButton();
       return (
         <div style={{ textAlign: 'center', marginTop: 10, marginBottom: 10}} >
-          <span style={{ fontSize: 20, verticalAlign: 'bottom'}}>
+          <span style={{ fontSize: 30, verticalAlign: 'bottom'}}>
             {typedString}
           </span>
-          <Button
-            style={{
-              background: 'white',
-              height: 26,
-              fontSize: 10,
-              float: 'right',
-              marginLeft: 5,
-              position: 'absolute'
-            }}
-            onClick={this.deleteTyped}>DEL</Button>
+          {deleteButton}
         </div>
       );
     }else{
